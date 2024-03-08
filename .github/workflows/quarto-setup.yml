@@ -1,4 +1,4 @@
-name: Setup Quarto 
+name: Build and Deploy HTML
 on:
   push:
     branches: 
@@ -8,8 +8,19 @@ jobs:
   quarto-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Check out repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.4.551
-      - run: |
-          quarto --version
+
+      # NOTE: If Publishing to GitHub Pages, set the permissions correctly (see top of this yaml)
+      - name: Publish to GitHub Pages (and render) 
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          path: issues-01.qmd
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
