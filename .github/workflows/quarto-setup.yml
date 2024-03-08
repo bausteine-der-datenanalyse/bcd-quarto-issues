@@ -4,6 +4,10 @@ on:
     branches: 
       - main
 
+permissions: 
+    contents: write
+    pages: write
+
 jobs:
   quarto-linux:
     runs-on: ubuntu-latest
