@@ -9,5 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.4.551
       - run: |
           quarto --version
