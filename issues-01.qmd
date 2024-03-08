@@ -1,0 +1,182 @@
+---
+title: "Untitled"
+format: 
+  pdf:
+    # pdf-engine: pdflatex
+    cite-method: biblatex
+    biblio-style: authoryear
+    default-image-extension: pdf
+  # html:
+  #   fig-align: center
+  #   default-image-extension: svg
+toc: true
+
+cap-location: bottom
+license: CC-BY
+
+bibliography: bibliography.bib
+---
+
+# Bugs
+Die bisher identifizierten Fehler scheinen überwiegend abhängig von der Version der lokalen Quarto-Datei bzw. der verwendeten Pakete zu sein. Diese Fehler sind in der Mehrzahl für sich genommen wenig problematisch, jedoch müssen neue Fehler jederzeit erwartet werden. Dies ist insbesondere für die Nachnutzungsphase problematisch, wenn ein fehlerfreies Funktionieren nur für einen definierten Versionsstand zugesichert werden kann.
+
+## fig-align: right + #fig-ID
+Problembeschreibung: Eine Grafik mit #fig-ID führt beim Rendern eines PDF zum Absturz, wenn die Ausrichtung global oder elementweise auf right gesetzt ist.  
+Hinweis: Problem scheint abhängig von der Quarto-Version zu sein. Tritt auf mit: 1.4.542
+
+Reproduktion des Problems:
+
+(a) nachfolgende Grafik auskommentieren (markieren & Strg + \# drücken) und im YAML-Header `format: pdf` setzen.
+
+![](Grafiken/working_code_CC0.png){#fig-unbeschriftet fig-alt="Eine Person programmiert am Computer" width="33%"}
+
+(b) nachfolgende Grafik auskommentieren und im YAML-Header `fig-align: right` löschen (oder auskommentieren) und `format: pdf` setzen.
+
+![](Grafiken/working_code_CC0.png){#fig-unbeschriftet fig-alt="Eine Person programmiert am Computer" width="33%" fig-align="right"}
+
+## Einbindung von jpg aus dem Internet
+Problembeschreibung: Ein jpg aus dem Internet einzubinden, führt beim Rendern eines PDF zum Absturz. (Ich kann mich nicht mehr erinnern, ob nur das Bild nicht eingebunden wurde oder das Rendern abbrach - das ist zufällig bei der Ursachenforschung für einen anderen Fehler passiert.)  
+Hinweis: Problem scheint abhängig von der Quarto-Version zu sein. Tritt auf mit: 1.3.450 (Florian Bagemihl)
+
+Reproduktion des Problems: Im YAML-Header `format: html` durch `format: pdf` und `fig-align: right` durch `fig-align: left` ersetzen.
+
+![Eine Grafik aus dem Internet](https://www.fh-dortmund.de/standorte/campus-emil-figge-strasse.php.media/40069/baege_209007.jpg.scaled/2df5b810f212abd61ed25df08ede5b7c.jpg){#fig-internet}
+
+## Tabellen (longtables) in 2 Spalten mit Beschriftungen 
+Problembeschreibung: Tabellen (longtables) in 2 Spalten mit Beschriftungen führen beim Export in PDF zum Absturz.(abhängig vom System, Ursache unklar - bei mir geht es nicht, bei Florian trotz möglichst identischer Dateiversionen aber schon.)
+
+Reproduktion des Problems: nachfolgende Div auskommentieren und im YAML-Header `format: pdf` setzen.
+
+::: {#tbl-loesung4 layout-ncol="2"}
+```{r}
+#| tbl-cap: Tabelle für Fälle
+#| label: tbl-loesung4
+
+
+
+```
+
+```{r}
+#| tbl-cap: Tabelle für Bevölkerung
+#| label: tbl-loesung5
+
+
+
+```
+
+Lösung 4 Jeweils eine Tabelle für Fälle und Bevölkerung
+:::
+
+# Fehlende Implementierung von Funktionen für PDF
+Das Problem bei diesen Beispielen ist vor allem, dass diese nur durch Versuch und Irrtum identifiziert wurden und die Ursachenforschung Zeit verschlingt. 
+
+## Von der globalen Definition abweichende Ausrichtung von Grafiken
+Problembeschreibung: Wird die Ausrichtung von Grafiken global im YAML-Header definiert `fig-align`, ist eine elementweise abweichende Ausrichtung von Grafiken in HTML möglich, in PDF aber nicht.  
+Hinweis: Könnte auch ein versionsspezifischer Bug sein
+
+Reproduktion des Problems: Im YAML-Header `format: html` ersetzen durch `format: pdf`. Im PDF sind beide Grafiken rechts ausgerichtet.
+
+![Grafik folgt der globalen Einstellung "right"](Grafiken/working_code_CC0.png){fig-alt="Eine Person programmiert am Computer" width="33%"}
+
+![Grafik mit elementweiser Einstellung fig-align="left"](Grafiken/working_code_CC0.png){fig-alt="Eine Person programmiert am Computer" width="33%" fig-align="left"}
+
+## Lizenzkey
+Problembeschreibung: Im YAML-Header gesetzter Lizenzhinweis `license: CC-BY` erscheint nicht im PDF (betrifft auch individuell konfigurierte Lizenz). Hinweis: Den Lizenzhinweis setzen wir manuell, um den Vorgaben für OER hinsichtlich Position und Gestaltung zu entsprechen.  
+Marc hat auf GitHub den Hinweis gefunden, dass die Funktion bislang nur für HTML implementiert ist und wohl auch andere Anhänge betrifft.  
+<https://github.com/quarto-dev/quarto-cli/discussions/3015> 
+
+Reproduktion des Problems: Im YAML-Header `format: html` ersetzen durch `format: pdf`. Im HTML erscheint am Ende des Dokuments ein Abschnitt "Reuse", in PDF nicht.
+
+# Unterschiedliche Gestaltung von HTML und PDF
+Um ein einheitliches Erscheinungsbild von HTML und PDF zu gewährleisten, muss teilweise auf formatspezifische Optionen im YAML-Header zurückgegriffen werden. Das ist im Einzelfall kein Problem, in der Summe führt das aber zu umständlich handzuhabenden Dateien, weil die QMD unübersichtlicher wird und beim Wechsel des Exportformats viele Zeilen aus- und einkommentiert werden müssen.  
+Hinweis: Marc kann sicherlich noch Beispiele ergänzen.
+
+## BibLaTeX vs. CSL
+Problembeschreibung: Das Erscheinungsbild des Quellenverzeichnisses wird vom gewählten Zitierstil bestimmt. Beim Export in PDF kann der Titel des Quellenverzeichnisses per Option eingestellt werden.  
+Hinweis: In diesem Beispiel geht es nicht um einen bestimmten Zitierstil, sondern um das Zusammenspiel der Konfigurationsmöglichkeiten in beiden Formaten.
+
+```
+format:  
+  pdf:
+    cite-method: biblatex
+    biblio-style: authoryear
+    biblio-title: Quellen
+```
+
+Die cite-method: biblatex ist in HTML nicht verfügbar. Beim Export in HTML muss dies über eine CSL-Datei konfiguriert werden. Mit einer CSL für den Zitierstil alpha wird aber das Quellenverzeichnis in PDF nicht korrekt gesetzt.
+
+![](Grafiken/alpha-Hemi52.png)
+
+Reproduktion des Problems: Im YAML-Header `# csl: din-1505-2-alphanumeric.csl` auskommentieren und `format: pdf` setzen. Wird die Quelle [@Hemingway1952] zitiert, erscheint am Dokumentenende ein falsch gesetztes Quellenverzeichnis.
+
+## Conditional Content
+Problembeschreibung: Grundsätzlich können mit Conditional Content viele Unterschiede zwischen HTML und PDF ausgebügelt werden. Die QMD-Datei wird dadurch aber unübersichtlich.
+
+### Beispiel angepasstes Quellenverzeichnis in HTML
+
+```
+:::{.content-visible when-format="html"}
+
+# Quellenverzeichnis {-}
+
+::: {#refs}
+:::
+
+:::
+```
+
+### Beispiel Textfarbe
+Markdown unterstützt die farbige Hervorhebung von Text nicht direkt.
+
+* Für den Export in HTML muss der andersfarbige Text in `<span>` Beispieltext `</span>` gesetzt werden. Innerhalb des führenden Einschubs kann die Farbe definiert werden $<span style="color:blue">$ <span style="color:blue">blauer Text</span>. Dies funktioniert aber nicht beim Export in PDF.
+
+* Für den Export als PDF muss der LaTeX-Befehl `\textcolor{blue}{blauen Text}` verwendet werden. Dessen Ausführung erzeugt \textcolor{blue}{blauen Text}. Das funktioniert aber nicht beim Export in HTML.
+
+> [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/font-color.html)
+
+Formatübergreifend ist dies mit [Conditional Content](https://quarto.org/docs/authoring/conditional.html) möglich. Bedingte Absätze werden von `:::` eingeschlossen eingefügt:
+
+```
+::: {.content-visible when-format="html"}
+Erscheint nur in HTML.
+:::
+```
+
+```
+::: {.content-visible when-format="pdf"}
+Erscheint nur in PDF.
+:::
+```
+
+::: {.content-visible when-format="html"}
+* <span style="color:blue">Dieser Absatz ist in HTML und in PDF  blau</span>.
+:::
+
+::: {.content-visible when-format="pdf"}
+* \textcolor{blue}{Dieser Absatz ist im PDF und in HTML blau}. 
+:::
+
+Bedingter Text kann auch innerhalb einer Zeile erzeugt werden. [<span style="color:red">So ist dieser Text im PDF und in HTML rot</span>.]{.content-visible when-format="html"}[\textcolor{red}{So ist dieser Text  im PDF und in HTML rot}.]{.content-visible when-format="pdf"} Bedingte Inhalte können positiv oder negativ definiert werden:
+
+[`[Erscheint in HTML]{.content-visible when-format="html"}`]{.content-visible when-format="html"}
+
+[`[Erscheint in PDF]{.content-visible when-format="pdf"}`]{.content-visible when-format="pdf"}
+
+[`[Erscheint nicht in HTML]{.content-visible unless-format="html"}`]{.content-visible unless-format="html"}
+
+[`[Erscheint nicht in PDF]{.content-visible unless-format="pdf"}`]{.content-visible unless-format="pdf"}
+
+[Conditional Content](https://quarto.org/docs/authoring/conditional.html)
+
+## SVG und GIF
+Problembeschreibung: Die Formate SVG und GIF werden von LaTeX bzw. PDF nicht unterstützt. Das gewünschte Verhalten ist, dass ein PNG erzeugt und ins PDF gesetzt wird. Beim Export in PDF stürzt der Prozess mit SVG ab, mit GIF beginnt zunächst ein Update "updating tlmgr, updating existing packages", dann bricht der Prozess ab.
+
+  -   Vektorgrafiken im Format SVG: Um Vektorgrafiken zu verarbeiten, wird die Bibliothek `Librsvg` benötigt. Die Installation ist je nach Betriebssystem unterschiedlich und erfordert unter Windows weitere Schritte. Siehe: [Quarto: PDF Format Improvements. SVG Images](https://quarto.org/docs/prerelease/1.3/pdf.html)
+
+  -   Grafiken im Format GIF : Das PDF-Format unterstützt animierte Bilddateien nicht bzw. nur in bestimmten Kombinationen aus Renderengine und PDF Reader. Quartos Standardengine TinyteX unterstützt animierte Bilddateien nicht.
+
+Reproduktion des Problems: Nachfolgende Grafiken auskommentieren und im YAML-Header `format: pdf` setzen.
+
+![Ein SVG](Grafiken/working_code_CC0){width="20%" #fig-svg}
+
+<!-- ![Ein GIF](Grafiken/Alice%20Rabbit%20Hole.gif) -->
