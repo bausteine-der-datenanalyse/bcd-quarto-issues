@@ -1,14 +1,14 @@
 ---
 title: "Untitled"
 format: 
-  pdf:
-    # pdf-engine: pdflatex
-    cite-method: biblatex
-    biblio-style: authoryear
-    default-image-extension: pdf
-  # html:
-  #   fig-align: center
-  #   default-image-extension: svg
+  # pdf:
+  #   # pdf-engine: pdflatex
+  #   cite-method: biblatex
+  #   biblio-style: authoryear
+  #   default-image-extension: pdf
+  html:
+    fig-align: center
+    default-image-extension: svg
 toc: true
 
 cap-location: bottom
@@ -28,11 +28,11 @@ Reproduktion des Problems:
 
 (a) nachfolgende Grafik auskommentieren (markieren & Strg + \# drücken) und im YAML-Header `format: pdf` setzen.
 
-![](Grafiken/working_code_CC0.png){#fig-unbeschriftet fig-alt="Eine Person programmiert am Computer" width="33%"}
+![](bilder/working_code_CC0.png){#fig-unbeschriftet fig-alt="Eine Person programmiert am Computer" width="33%"}
 
 (b) nachfolgende Grafik auskommentieren und im YAML-Header `fig-align: right` löschen (oder auskommentieren) und `format: pdf` setzen.
 
-![](Grafiken/working_code_CC0.png){#fig-unbeschriftet fig-alt="Eine Person programmiert am Computer" width="33%" fig-align="right"}
+![](bilder/working_code_CC0.png){#fig-unbeschriftet fig-alt="Eine Person programmiert am Computer" width="33%" fig-align="right"}
 
 ## Einbindung von jpg aus dem Internet
 Problembeschreibung: Ein jpg aus dem Internet einzubinden, führt beim Rendern eines PDF zum Absturz. (Ich kann mich nicht mehr erinnern, ob nur das Bild nicht eingebunden wurde oder das Rendern abbrach - das ist zufällig bei der Ursachenforschung für einen anderen Fehler passiert.)  
@@ -70,15 +70,15 @@ Lösung 4 Jeweils eine Tabelle für Fälle und Bevölkerung
 # Fehlende Implementierung von Funktionen für PDF
 Das Problem bei diesen Beispielen ist vor allem, dass diese nur durch Versuch und Irrtum identifiziert wurden und die Ursachenforschung Zeit verschlingt. 
 
-## Von der globalen Definition abweichende Ausrichtung von Grafiken
-Problembeschreibung: Wird die Ausrichtung von Grafiken global im YAML-Header definiert `fig-align`, ist eine elementweise abweichende Ausrichtung von Grafiken in HTML möglich, in PDF aber nicht.  
+## Von der globalen Definition abweichende Ausrichtung von bilder
+Problembeschreibung: Wird die Ausrichtung von bilder global im YAML-Header definiert `fig-align`, ist eine elementweise abweichende Ausrichtung von bilder in HTML möglich, in PDF aber nicht.  
 Hinweis: Könnte auch ein versionsspezifischer Bug sein
 
-Reproduktion des Problems: Im YAML-Header `format: html` ersetzen durch `format: pdf`. Im PDF sind beide Grafiken rechts ausgerichtet.
+Reproduktion des Problems: Im YAML-Header `format: html` ersetzen durch `format: pdf`. Im PDF sind beide bilder rechts ausgerichtet.
 
-![Grafik folgt der globalen Einstellung "right"](Grafiken/working_code_CC0.png){fig-alt="Eine Person programmiert am Computer" width="33%"}
+![Grafik folgt der globalen Einstellung "right"](bilder/working_code_CC0.png){fig-alt="Eine Person programmiert am Computer" width="33%"}
 
-![Grafik mit elementweiser Einstellung fig-align="left"](Grafiken/working_code_CC0.png){fig-alt="Eine Person programmiert am Computer" width="33%" fig-align="left"}
+![Grafik mit elementweiser Einstellung fig-align="left"](bilder/working_code_CC0.png){fig-alt="Eine Person programmiert am Computer" width="33%" fig-align="left"}
 
 ## Lizenzkey
 Problembeschreibung: Im YAML-Header gesetzter Lizenzhinweis `license: CC-BY` erscheint nicht im PDF (betrifft auch individuell konfigurierte Lizenz). Hinweis: Den Lizenzhinweis setzen wir manuell, um den Vorgaben für OER hinsichtlich Position und Gestaltung zu entsprechen.  
@@ -105,7 +105,7 @@ format:
 
 Die cite-method: biblatex ist in HTML nicht verfügbar. Beim Export in HTML muss dies über eine CSL-Datei konfiguriert werden. Mit einer CSL für den Zitierstil alpha wird aber das Quellenverzeichnis in PDF nicht korrekt gesetzt.
 
-![](Grafiken/alpha-Hemi52.png)
+![](bilder/alpha-Hemi52.png)
 
 Reproduktion des Problems: Im YAML-Header `# csl: din-1505-2-alphanumeric.csl` auskommentieren und `format: pdf` setzen. Wird die Quelle [@Hemingway1952] zitiert, erscheint am Dokumentenende ein falsch gesetztes Quellenverzeichnis.
 
@@ -171,12 +171,12 @@ Bedingter Text kann auch innerhalb einer Zeile erzeugt werden. [<span style="col
 ## SVG und GIF
 Problembeschreibung: Die Formate SVG und GIF werden von LaTeX bzw. PDF nicht unterstützt. Das gewünschte Verhalten ist, dass ein PNG erzeugt und ins PDF gesetzt wird. Beim Export in PDF stürzt der Prozess mit SVG ab, mit GIF beginnt zunächst ein Update "updating tlmgr, updating existing packages", dann bricht der Prozess ab.
 
-  -   Vektorgrafiken im Format SVG: Um Vektorgrafiken zu verarbeiten, wird die Bibliothek `Librsvg` benötigt. Die Installation ist je nach Betriebssystem unterschiedlich und erfordert unter Windows weitere Schritte. Siehe: [Quarto: PDF Format Improvements. SVG Images](https://quarto.org/docs/prerelease/1.3/pdf.html)
+  -   Vektorbilder im Format SVG: Um Vektorbilder zu verarbeiten, wird die Bibliothek `Librsvg` benötigt. Die Installation ist je nach Betriebssystem unterschiedlich und erfordert unter Windows weitere Schritte. Siehe: [Quarto: PDF Format Improvements. SVG Images](https://quarto.org/docs/prerelease/1.3/pdf.html)
 
-  -   Grafiken im Format GIF : Das PDF-Format unterstützt animierte Bilddateien nicht bzw. nur in bestimmten Kombinationen aus Renderengine und PDF Reader. Quartos Standardengine TinyteX unterstützt animierte Bilddateien nicht.
+  -   bilder im Format GIF : Das PDF-Format unterstützt animierte Bilddateien nicht bzw. nur in bestimmten Kombinationen aus Renderengine und PDF Reader. Quartos Standardengine TinyteX unterstützt animierte Bilddateien nicht.
 
-Reproduktion des Problems: Nachfolgende Grafiken auskommentieren und im YAML-Header `format: pdf` setzen.
+Reproduktion des Problems: Nachfolgende bilder auskommentieren und im YAML-Header `format: pdf` setzen.
 
-![Ein SVG](Grafiken/working_code_CC0){width="20%" #fig-svg}
+![Ein SVG](bilder/working_code_CC0){width="20%" #fig-svg}
 
-<!-- ![Ein GIF](Grafiken/Alice%20Rabbit%20Hole.gif) -->
+<!-- ![Ein GIF](bilder/Alice%20Rabbit%20Hole.gif) -->
