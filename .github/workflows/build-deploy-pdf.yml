@@ -15,7 +15,7 @@ jobs:
       - name: Update apt
         run: sudo apt update
       - name: Install additional packages
-        run: sudo apt-get install -y librsvg2
+        run: sudo apt-get install -y librsvg2-bin
       
       - name: Check out repository
         uses: actions/checkout@v4
