@@ -27,7 +27,7 @@ jobs:
 
       # From https://github.com/actions/setup-python
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -51,7 +51,7 @@ jobs:
           path: issues-01.qmd # By default, the current working dir is used i.e `quarto render .`
 
       - name: Upload PDF as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: template.pdf
           path: issues-01.pdf
