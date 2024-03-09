@@ -12,12 +12,24 @@ jobs:
   quarto-linux:
     runs-on: ubuntu-latest
     steps:
+      - name: Update apt
+        run: sudo apt update
+      - name: Install additional packages
+        run: sudo apt-get install -y librsvg2
+      
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Convert SVG to PDF
+        run: |
+          cd bilder
+          rsvg-convert working_code_CC0.svg -f pdf -o working_code_CC0.pdf
+
       # From https://github.com/actions/setup-python
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
 
       # From https://github.com/r-lib/actions/tree/v2-branch/setup-r
       - name: Setup R
