@@ -54,4 +54,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: template.pdf
-          path: main.pdf
+          path: issues-01.pdf
