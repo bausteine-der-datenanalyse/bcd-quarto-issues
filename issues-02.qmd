@@ -1,0 +1,146 @@
+---
+title: "Issues 02"
+format: 
+  html: 
+    license: CC BY-SA
+  pdf:
+    toc: false
+    keep-tex: true
+editor: visual
+echo: false
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+library(ggplot2)
+library(tidyverse)
+library(lubridate)
+library(readxl)
+library(kableExtra)
+library(janitor)
+
+```
+
+# Unterschiedliche Gestaltung von HTML und PDF
+
+Das ist mein zusätzlicher Themenblock, der aber in der Theorie niedrige Priorität hat. Zur Not ändert man die Gestaltung des Dokuments und lässt z.B. zwei Tabellen nicht nebeneinander anzeigen, sondern untereinander.
+
+## Tabellen und Grafiken werden zweispaltig nebeneinander ohne Abstand im PDF generiert
+
+In der HTML-Ausgabe funktioniert dies einwandfrei, im PDF sieht das eher bescheiden aus.
+
+::: {layout-ncol="2"}
+```{r}
+#| label: setup2
+#| include: false
+
+
+
+tbl2 <- tribble(
+  ~"Land",  ~"Jahr", ~"Fälle", ~"Bevölkerung",
+  "Afghanistan", 1999, 745, 19987071,
+  "Afghanistan", 2000, 2666, 20595360,
+  "Brasilien", 1999, 37737, 172006362,
+  "Brasilien", 2000, 80488, 174504898,
+  "China", 1999, 212258, 1272915272,
+  "China", 2000, 213766, 1280428583,
+  )
+```
+
+```{r}
+#| tbl-cap: Lösung 2:Eine Spalte für jede Variable
+
+
+tbl2 |>
+  kable(
+    booktabs = TRUE,
+    align = c("l", "c", "c", "c")
+  ) |>
+  row_spec(0, bold = TRUE)
+```
+
+```{r}
+#| label: setup3
+#| include: false
+
+
+
+tbl3 <- tribble(
+  ~"Land",  ~"Jahr", ~"Anteile", 
+  "Afghanistan", 1999, "745/19987071",
+  "Afghanistan", 2000, "2666/20595360",
+  "Brasilien", 1999, "37737/172006362",
+  "Brasilien", 2000, "80488/174504898",
+  "China", 1999, "212258/1272915272",
+  "China", 2000, "213766/1280428583",
+  )
+```
+
+```{r}
+#| tbl-cap: Lösung 3:Kombination von Werten
+
+
+tbl3 |>
+  kable(
+    booktabs = TRUE,
+    align = c("l", "c", "c", "c")
+  ) |>
+  row_spec(0, bold = TRUE)
+```
+:::
+
+Eine mögliche Lösung ist das Hinzufügen von negativen Werten in den Layout-Optionen um Platz zu generieren. Dies vergrößert auch den Platz zwischen den Elementen in der HTML-Ausgabe, außer man arbeitet mit conditional content. Dies kann wie Maik aber sagt, sehr schnell sehr unübersichtlich werden.
+
+::: {layout="[40,-5,40]"}
+```{r}
+#| tbl-cap: Lösung 2:Eine Spalte für jede Variable
+
+
+tbl2 |>
+  kable(
+    booktabs = TRUE,
+    align = c("l", "c", "c", "c")
+  ) |>
+  row_spec(0, bold = TRUE)
+```
+
+```{r}
+#| tbl-cap: Lösung 3:Kombination von Werten
+
+
+tbl3 |>
+  kable(
+    booktabs = TRUE,
+    align = c("l", "c", "c", "c")
+  ) |>
+  row_spec(0, bold = TRUE)
+```
+:::
+
+Zusätzlich werden diese Beispieltabellen im PDF als Figure erstellt, sodass im PDF-Output z.B. "Figure 1:Lösung 2:Eine Spalte für jede Variable" anstatt der beabsichtigten Lösung (die so auch in HTML auftaucht) ":Lösung 2:Eine Spalte für jede Variable"
+
+## Platzierung von Floats
+
+Allgemein wird viel bei der Formatierung durcheinander geworfen in der PDF-Ausgabe. Dies lässt sich zum Teil lösen, indem man " fig-pos="H" " in der Layout-Option des Elements hinzufügt, damit es im PDF auch an der korrekten Stelle erscheint. Das erscheint mir etwas zeitintensiv zu überprüfen, ob jedes Element an der korrekten Stelle gesetzt wurde (oder man fügt diese Option standardmäßig für jedes Element ein). 
+
+## Ausgabe von Emojis
+
+Werden standardmäßig nicht in der PDF-Ausgabe , aber im HTML generiert. Mögliche Lösungen sind andere Fonts 
+
+[siehe Github Link 1](https://github.com/quarto-dev/quarto-cli/issues/2491) 
+
+
+[siehe Github Link 2](https://github.com/quarto-dev/quarto-cli/discussions/7630)
+
+Ebenfalls kein großes Problem, zur Not verzichte ich auf die Darstellung von Emojis und füge manuell Bilder davon ein.
+
+|            |           |        |                    |                   |
+|:----------:|:---------:|:------:|:------------------:|:-----------------:|
+| Skalenart  | auszählen | ordnen | Differenzen bilden | Quotienten bilden |
+|  nominal   |    ✔️     |   ❌   |         ❌         |        ❌         |
+|  ordinal   |    ✔️     |   ✔️   |         ❌         |        ❌         |
+| Intervall  |    ✔️     |   ✔️   |         ✔️         |        ❌         |
+| Verhältnis |    ✔️     |   ✔️   |         ✔️         |        ✔️         |
+
+: Sinnvolle Operationen für Daten auf verschiedenen Skalen {#tbl-merkmale}
