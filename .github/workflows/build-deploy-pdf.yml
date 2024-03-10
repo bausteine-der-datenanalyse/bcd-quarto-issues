@@ -48,7 +48,7 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         with:
           to: pdf # If set, it will be equivalent to `quarto render --to html`
-          path: . # By default, the current working dir is used i.e `quarto render .`
+          path: ./issues-*.qmd # By default, the current working dir is used i.e `quarto render .`
 
       - name: Upload PDF as artifact
         uses: actions/upload-artifact@v4
