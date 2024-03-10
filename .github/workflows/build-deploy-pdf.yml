@@ -38,6 +38,7 @@ jobs:
         run: |
           Rscript -e "install.packages('rmarkdown')"
           Rscript -e "install.packages('ggplot2')"
+          Rscript -e "install.packages('curl')"
           Rscript -e "install.packages('httr')"
           Rscript -e "install.packages('tidyverse')"
       
