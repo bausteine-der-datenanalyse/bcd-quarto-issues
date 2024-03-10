@@ -23,7 +23,7 @@ jobs:
       - name: Convert SVG to PDF
         run: |
           cd bilder
-          rsvg-convert working_code_CC0.svg -f pdf -o working_code_CC0.pdf
+          sh convert_SVG2PDF.sh
 
       # From https://github.com/actions/setup-python
       - name: Setup Python
@@ -48,10 +48,10 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         with:
           to: pdf # If set, it will be equivalent to `quarto render --to html`
-          path: issues-01.qmd # By default, the current working dir is used i.e `quarto render .`
+          path: . # By default, the current working dir is used i.e `quarto render .`
 
       - name: Upload PDF as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: template.pdf
-          path: issues-01.pdf
+          name: pdf-issues
+          path: *.pdf
