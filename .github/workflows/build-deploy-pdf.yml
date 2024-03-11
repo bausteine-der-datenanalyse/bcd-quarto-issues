@@ -42,6 +42,7 @@ jobs:
           Rscript -e "install.packages('httr')"
           Rscript -e "install.packages('tidyverse')"
           Rscript -e "install.packages('kableExtra')"
+          Rscript -e "install.packages('janitor')"
       
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
