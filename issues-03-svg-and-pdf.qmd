@@ -1,0 +1,10 @@
+---
+format:
+    html:
+        default-image-extension: svg
+    pdf:
+        default-image-extension: pdf
+---
+
+![](bilder/working_code_CC0)
+
